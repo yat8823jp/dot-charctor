@@ -1,6 +1,11 @@
 const DOT_SIZE    = 16;
 const X_START_POS = 50;
 const Y_START_POS = 50;
+const canvas = {
+    width: 300,
+    height: 300
+}
+console.log( canvas );
 
 const dataSet = [
     "0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0",
@@ -51,18 +56,6 @@ const Picture = ( function() {
         this.ctx = this.canvas.getContext( "2d" );
         this.rand = 1;
     }
-    // Picture.prototype.draw = function() {
-    //     console.log( this.rand );
-    //     for ( let i = 0; i < dataSet.length; i++ ) {
-    //         const x = X_START_POS + ( i % 16 ) * DOT_SIZE * this.rand;
-    //         const y = Y_START_POS + Math.floor( i / 16 ) * DOT_SIZE * this.rand;
-    //         const color = getRgbColor( dataSet[ i ] );
-    //         if ( dataSet[ i ] != "0" ) {
-    //             this.ctx.fillStyle = color;
-    //             this.ctx.fillRect( x, y, DOT_SIZE * 0.9, DOT_SIZE * 0.9 );
-    //         }
-    //     }
-    // };
     Picture.prototype.draw = function() {
         init( this );
     }
@@ -86,10 +79,7 @@ function move( cat ) {
     canvas.addEventListener(
         "click",
         () => {
-            // const rand = Math.floor( Math.random() * dataSet.length );
-            // cat.rand = rand;
-            // cat.draw();
-            // cat.ctx.clearRect( 100, 100, DOT_SIZE * 0.9, DOT_SIZE * 0.9 );
+            cat.ctx.clearRect( 0, 0, canvas.width, canvas.height );
             for ( let i = 0; i < dataSet.length; i++ ) {
                 const randX = Math.floor( Math.random() * dataSet.length );
                 const randY = Math.floor( Math.random() * dataSet.length );
@@ -105,6 +95,6 @@ function move( cat ) {
     );
 }
 
-const cat = new Picture( 300, 300 );
+const cat = new Picture( canvas.width, canvas.height );
 cat.draw();
 move( cat );
