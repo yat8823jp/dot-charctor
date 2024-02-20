@@ -5,6 +5,7 @@ const canvas = {
     width: 300,
     height: 300
 }
+let i =0;
 
 const dataSet = [
     "0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0",
@@ -56,20 +57,35 @@ const Picture = ( function() {
         this.rand = 1;
     }
     Picture.prototype.draw = function() {
-        init( this );
+        draw16dot( this );
     }
     return Picture;
 } )();
 
-function init( picture ) {
+function draw16dot( picture, rand = false ) {
+    cat.ctx.clearRect( 0, 0, canvas.width, canvas.height );
     for ( let i = 0; i < dataSet.length; i++ ) {
-        const x = X_START_POS + ( i % 16 ) * DOT_SIZE;
-        const y = Y_START_POS + Math.floor( i / 16 ) * DOT_SIZE;
+        let x, y;
+        if ( rand === false ) {
+            x = X_START_POS + ( i % 16 ) * DOT_SIZE;
+            y = Y_START_POS + Math.floor( i / 16 ) * DOT_SIZE;
+        } else {
+            x = Math.floor( Math.random() * dataSet.length );
+            y = Math.floor( Math.random() * dataSet.length );
+        }
         const color = getRgbColor( dataSet[ i ] );
         if ( dataSet[ i ] != "0" ) {
             picture.ctx.fillStyle = color;
             picture.ctx.fillRect( x, y, DOT_SIZE * 0.9, DOT_SIZE * 0.9 );
         }
+    }
+    let loopAnime = window.requestAnimationFrame( () => draw16dot( cat, rand ) );
+    if ( rand ) {
+        i++;
+        if ( i === 100 ) {
+            window.cancelAnimationFrame( loopAnime );
+            i = 0;
+        };
     }
 }
 
@@ -79,18 +95,7 @@ function move( cat ) {
         "click",
         () => {
             let rand = true;
-            cat.ctx.clearRect( 0, 0, canvas.width, canvas.height );
-            for ( let i = 0; i < dataSet.length; i++ ) {
-                const randX = Math.floor( Math.random() * dataSet.length );
-                const randY = Math.floor( Math.random() * dataSet.length );
-                const x = X_START_POS + ( i % 16 ) * DOT_SIZE;
-                const y = Y_START_POS + Math.floor( i / 16 ) * DOT_SIZE;
-                const color = getRgbColor( dataSet[ i ] );
-                if ( dataSet[ i ] != "0" ) {
-                    cat.ctx.fillStyle = color;
-                    cat.ctx.fillRect( randX, randY, DOT_SIZE * 0.9, DOT_SIZE * 0.9 );
-                }
-            }
+            window.requestAnimationFrame( () => draw16dot( cat, rand ) );
         }
     );
 }
