@@ -5,7 +5,6 @@ const canvas = {
     width: 300,
     height: 300
 }
-console.log( canvas );
 
 const dataSet = [
     "0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0",
@@ -79,6 +78,7 @@ function move( cat ) {
     canvas.addEventListener(
         "click",
         () => {
+            let rand = true;
             cat.ctx.clearRect( 0, 0, canvas.width, canvas.height );
             for ( let i = 0; i < dataSet.length; i++ ) {
                 const randX = Math.floor( Math.random() * dataSet.length );
@@ -89,7 +89,7 @@ function move( cat ) {
                 if ( dataSet[ i ] != "0" ) {
                     cat.ctx.fillStyle = color;
                     cat.ctx.fillRect( randX, randY, DOT_SIZE * 0.9, DOT_SIZE * 0.9 );
-                }        
+                }
             }
         }
     );
